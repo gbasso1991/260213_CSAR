@@ -296,9 +296,226 @@ plt.suptitle('NF@citrico - coprecpitacion',fontsize=16)
 plt.savefig('NF_T_vs_t_all.png', dpi=300)
 
 plt.show()
+#%% Comparativa NE vs NF
+
+
+fig,(ax,ax1,ax2,ax3,ax4)=plt.subplots(5,1,figsize=(10,10), constrained_layout=True,
+                                      sharex=True,sharey=True)
+
+ax.set_title('57 kA/m',loc='left')
+ax1.set_title('47 kA/m',loc='left')
+ax2.set_title('38 kA/m',loc='left')
+ax3.set_title('28 kA/m',loc='left')
+ax4.set_title('19 kA/m',loc='left')
+
+ax.plot(t_NF_300_150_1,T_NF_300_150_1,'.-',label=paths_NF[0])
+ax.plot(t_NF_300_150_2,T_NF_300_150_2,'.-',label=paths_NF[1])
+ax.plot(t_NE_300_150_1,T_NE_300_150_1,'.-',label=paths_NE[0])
+ax.plot(t_NE_300_150_2,T_NE_300_150_2,'.-',label=paths_NE[1])
+
+ax1.plot(t_NF_300_125_1,T_NF_300_125_1,'.-',label=paths_NF[2])
+ax1.plot(t_NF_300_125_2,T_NF_300_125_2,'.-',label=paths_NF[3])
+
+ax1.plot(t_NE_300_125_1,T_NE_300_125_1,'.-',label=paths_NE[2])
+ax1.plot(t_NE_300_125_2,T_NE_300_125_2,'.-',label=paths_NE[3])
+
+ax2.plot(t_NF_300_100_1,T_NF_300_100_1,'.-',label=paths_NF[4])
+ax2.plot(t_NF_300_100_2,T_NF_300_100_2,'.-',label=paths_NF[5])
+
+ax2.plot(t_NE_300_100_1,T_NE_300_100_1,'.-',label=paths_NE[4])
+ax2.plot(t_NE_300_100_2,T_NE_300_100_2,'.-',label=paths_NE[5])
+
+ax3.plot(t_NF_300_075_1,T_NF_300_075_1,'.-',label=paths_NF[6])
+ax3.plot(t_NF_300_075_2,T_NF_300_075_2,'.-',label=paths_NF[7])
+
+ax3.plot(t_NE_300_075_1,T_NE_300_075_1,'.-',label=paths_NE[6])
+ax3.plot(t_NE_300_075_2,T_NE_300_075_2,'.-',label=paths_NE[7])
+
+ax4.plot(t_NF_300_050_1,T_NF_300_050_1,'.-',label=paths_NF[8])
+ax4.plot(t_NF_300_050_2,T_NF_300_050_2,'.-',label=paths_NF[9])
+
+ax4.plot(t_NE_300_050_1,T_NE_300_050_1,'.-',label=paths_NE[8])
+ax4.plot(t_NE_300_050_2,T_NE_300_050_2,'.-',label=paths_NE[9])
+for a in (ax,ax1,ax2,ax3,ax4):
+    a.grid()
+    a.legend()
+    a.set_xlim(0,)
+    #.set_ylim(20,43)
+ax4.set_xlabel('t (s)')    
+plt.xlim(0,1200)
+plt.suptitle('NF@citrico - coprecpitacion',fontsize=16)
+plt.savefig('NE&NF_T_vs_t_all.png', dpi=300)
 
 
 
+#%%%  Calculo de CSAR vs t 
+
+# dT/dt vs t
+# --- Datos ---
+
+t_1 = t_NF_300_150_1
+T_1 = T_NF_300_150_1
+
+t_2 = t_NF_300_125_1
+T_2 = T_NF_300_125_1
+
+t_3 = t_NF_300_100_1
+T_3 = T_NF_300_100_1
+
+t_4 = t_NF_300_075_1
+T_4 = T_NF_300_075_1
+
+
+#recorto a maximo valor
+t_1 = t_1[:np.argmax(T_1)+1]
+T_1 = T_1[:np.argmax(T_1)+1]
+t_2 = t_2[:np.argmax(T_2)+1]
+T_2 = T_2[:np.argmax(T_2)+1]
+t_3 = t_3[:np.argmax(T_3)+1]
+T_3 = T_3[:np.argmax(T_3)+1]
+t_4 = t_4[:np.argmax(T_4)+1]
+T_4 = T_4[:np.argmax(T_4)+1]
+
+dT1 = np.gradient(T_1, t_1)
+dT2 = np.gradient(T_2, t_2)
+dT3 = np.gradient(T_3, t_3)
+dT4 = np.gradient(T_4, t_4)
+
+concentracion_NF=15.0 #g/L
+CSAR_1 = dT1*4.186e3/concentracion_NF
+CSAR_2 = dT2*4.186e3/concentracion_NF
+CSAR_3 = dT3*4.186e3/concentracion_NF
+CSAR_4 = dT4*4.186e3/concentracion_NF
+
+fig,(ax,ax2,ax3)=plt.subplots(3,1,figsize=(10,12),constrained_layout=True,sharex=True) 
+ax.plot(t_1,T_1,'.-',label=paths_NF[0])
+ax.plot(t_2,T_2,'.-',label=paths_NF[2])
+ax.plot(t_3,T_3,'.-',label=paths_NF[4])
+ax.plot(t_4,T_4,'.-',label=paths_NF[6])
+
+ax2.plot(t_1,dT1,'.-',label=paths_NF[0])
+ax2.plot(t_2,dT2,'.-',label=paths_NF[2])
+ax2.plot(t_3,dT3,'.-',label=paths_NF[4])
+ax2.plot(t_4,dT4,'.-',label=paths_NF[6])
+
+ax3.plot(t_1,CSAR_1,'.-',label=paths_NF[0])
+ax3.plot(t_2,CSAR_2,'.-',label=paths_NF[2])
+ax3.plot(t_3,CSAR_3,'.-',label=paths_NF[4])
+ax3.plot(t_4,CSAR_4,'.-',label=paths_NF[6])
+for a in [ax,ax2,ax3]:
+    a.grid()
+    a.legend()
+    a.set_xlim(0,)
+    #.set_ylim(20,43)
+ax.set_ylabel('T (°C)')
+ax2.set_ylabel('dT/dt (°C/s)')
+ax3.set_ylabel('CSAR (W/g)')
+ax3.set_xlabel('t (s)')
+plt.suptitle('CSAR - NF@citrico - 15.0 g/L',fontsize=16)
+plt.savefig('CSAR_NE.png', dpi=300)
+plt.show()
+
+#%% CSAR NE
+t_1 = t_NE_300_150_1
+T_1 = T_NE_300_150_1
+t_2 = t_NE_300_125_1
+T_2 = T_NE_300_125_1
+t_3 = t_NE_300_100_1
+T_3 = T_NE_300_100_1
+t_4 = t_NE_300_075_1
+T_4 = T_NE_300_075_1
+
+#%
+#recorto a maximo valor
+t_1 = t_1[:np.argmax(T_1)+1]
+T_1 = T_1[:np.argmax(T_1)+1]
+t_2 = t_2[:np.argmax(T_2)+1]
+T_2 = T_2[:np.argmax(T_2)+1]
+t_3 = t_3[:np.argmax(T_3)+1]
+T_3 = T_3[:np.argmax(T_3)+1]
+t_4 = t_4[:np.argmax(T_4)+1]
+T_4 = T_4[:np.argmax(T_4)+1]
+
+dT1 = np.gradient(T_1, t_1)
+dT2 = np.gradient(T_2, t_2)
+dT3 = np.gradient(T_3, t_3)
+dT4 = np.gradient(T_4, t_4)
+
+concentracion_NF=15.0 #g/L
+CSAR_1 = dT1*4.186e3/concentracion_NF
+CSAR_2 = dT2*4.186e3/concentracion_NF
+CSAR_3 = dT3*4.186e3/concentracion_NF
+CSAR_4 = dT4*4.186e3/concentracion_NF
+
+fig,(ax,ax2,ax3)=plt.subplots(3,1,figsize=(10,12),constrained_layout=True,sharex=True) 
+ax.plot(t_1,T_1,'.-',label=paths_NF[0])
+ax.plot(t_2,T_2,'.-',label=paths_NF[2])
+ax.plot(t_3,T_3,'.-',label=paths_NF[4])
+ax.plot(t_4,T_4,'.-',label=paths_NF[6])
+
+ax2.plot(t_1,dT1,'.-',label=paths_NF[0])
+ax2.plot(t_2,dT2,'.-',label=paths_NF[2])
+ax2.plot(t_3,dT3,'.-',label=paths_NF[4])
+ax2.plot(t_4,dT4,'.-',label=paths_NF[6])
+
+ax3.plot(t_1,CSAR_1,'.-',label=paths_NF[0])
+ax3.plot(t_2,CSAR_2,'.-',label=paths_NF[2])
+ax3.plot(t_3,CSAR_3,'.-',label=paths_NF[4])
+ax3.plot(t_4,CSAR_4,'.-',label=paths_NF[6])
+
+for a in [ax,ax2,ax3]:
+    a.grid()
+    a.legend()
+    a.set_xlim(0,)
+    #.set_ylim(20,43)
+ax.set_ylabel('T (°C)')
+ax2.set_ylabel('dT/dt (°C/s)')
+ax3.set_ylabel('CSAR (W/g)')
+ax3.set_xlabel('t (s)')
+plt.suptitle('CSAR - NE@citrico - 15.0 g/L',fontsize=16)
+plt.savefig('CSAR_NE.png', dpi=300)
+
+#%%
+
+from scipy.signal import savgol_filter
+import matplotlib.pyplot as plt
+import numpy as np
+
+dt = t_1[1] - t_1[0]
+
+window = 31    # probar 21–41
+poly = 3
+
+# Derivada suavizada
+dTdt_sg = savgol_filter(T_1, window_length=window,
+                        polyorder=poly,
+                        deriv=1,
+                        delta=dt)
+
+# Gradiente crudo (para comparar)
+dTdt_grad_1 = np.gradient(T_1, dt)
+dTdt_grad_2 = np.gradient(T_2, dt)
+dTdt_grad_3 = np.gradient(T_3, dt)
+#%%
+%matplotlib
+fig,(ax,ax2)=plt.subplots(2,1,figsize=(8,7),constrained_layout=True,sharex=True)
+
+ax.plot(t_1, T_1, '.-', label='Orig')
+ax.plot(t_2, T_2, '.-', label='Orig')
+ax.plot(t_3, T_3, '.-', label='Orig')
+ax2.plot(t_1, dTdt_grad_1, '.-', label='gradient (crudo)')
+ax2.plot(t_2, dTdt_grad_2, '.-', label='gradient (crudo)')
+ax2.plot(t_3, dTdt_grad_3, '.-', label='gradient (crudo)')
+
+#ax2.plot(t_1, dTdt_sg, '-', linewidth=2, label='Savitzky-Golay')
+ax2.axhline(0, color='k', ls='--')
+ax2.set_xlabel('t (s)')
+ax2.set_ylabel('dT/dt (°C/s)')
+
+for a in [ax,ax2]:
+    a.grid()
+    a.legend()
+plt.show()
 
 
 
