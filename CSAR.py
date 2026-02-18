@@ -412,7 +412,7 @@ ax2.set_ylabel('dT/dt (°C/s)')
 ax3.set_ylabel('CSAR (W/g)')
 ax3.set_xlabel('t (s)')
 plt.suptitle('CSAR - NF@citrico - 15.0 g/L',fontsize=16)
-plt.savefig('CSAR_NE.png', dpi=300)
+plt.savefig('CSAR_NF.png', dpi=300)
 plt.show()
 
 #%% CSAR NE
