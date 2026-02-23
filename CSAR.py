@@ -58,6 +58,7 @@ plt.ylabel('T (°C)')
 plt.ylim(23.5,24.5)
 plt.grid()      
 plt.title('Agua - 300 kHz - 57 kA/m')
+plt.savefig('templog_Agua.png',dpi=300)
 plt.show()
 
 #%% ===================== NE   =====================
@@ -87,43 +88,67 @@ t_NE_300_075_2,T_NE_300_075_2,_=lector_templog(paths_NE_300_075[1])
 t_NE_300_050_1,T_NE_300_050_1,_=lector_templog(paths_NE_300_050[0])
 t_NE_300_050_2,T_NE_300_050_2,_=lector_templog(paths_NE_300_050[1])
 
-tiempos=[t_NE_300_150_1,t_NE_300_150_2,
+tiempos_NE=[t_NE_300_150_1,t_NE_300_150_2,
          t_NE_300_125_1,t_NE_300_125_2,
          t_NE_300_100_1,t_NE_300_100_2,
          t_NE_300_075_1,t_NE_300_075_2,
          t_NE_300_050_1,t_NE_300_050_2]
-temperaturas=[T_NE_300_150_1,T_NE_300_150_2,
+temperaturas_NE=[T_NE_300_150_1,T_NE_300_150_2,
              T_NE_300_125_1,T_NE_300_125_2,
              T_NE_300_100_1,T_NE_300_100_2,
              T_NE_300_075_1,T_NE_300_075_2,
              T_NE_300_050_1,T_NE_300_050_2]
 
-t_on = [datetime(2026, 2, 13, 11, 31, 30), datetime(2026, 2, 13, 11, 40, 50),
+t_on_NE = [datetime(2026, 2, 13, 11, 31, 30), datetime(2026, 2, 13, 11, 40, 50),
         datetime(2026, 2, 13, 11, 47, 50), datetime(2026, 2, 13, 11, 57, 30),
         datetime(2026, 2, 13, 12, 7, 30), datetime(2026, 2, 13, 12, 17, 30),
         datetime(2026, 2, 13, 12, 29, 00), datetime(2026, 2, 13, 12, 42, 20),
         datetime(2026, 2, 13, 12, 54, 30), datetime(2026, 2, 13, 14, 32, 20)]
 
-t_off = [datetime(2026, 2, 13, 11, 34, 20), datetime(2026, 2, 13, 11, 43, 50),
+t_off_NE = [datetime(2026, 2, 13, 11, 34, 20), datetime(2026, 2, 13, 11, 43, 50),
          datetime(2026, 2, 13, 11, 51, 00), datetime(2026, 2, 13, 12, 00, 40),
          datetime(2026, 2, 13, 12, 11, 30), datetime(2026, 2, 13, 12, 23, 00),
          datetime(2026, 2, 13, 12, 36, 00), datetime(2026, 2, 13, 12, 49, 20),
          datetime(2026, 2, 13, 13, 7, 30), datetime(2026, 2, 13, 14, 51, 10)]
-delta_t = [(off-on).total_seconds() for on, off in zip(t_on, t_off)]
+delta_t = [(off-on).total_seconds() for on, off in zip(t_on_NE, t_off_NE)]
 
-titulos=[57,57,47,47,38,38,28,28,19,19]
-for i in range(0,len(titulos),2):  
+rates_NE=[]
+rates_NE_2=[]
+titulos_NE=[57,57,47,47,38,38,28,28,19,19]
+for i in range(0,len(titulos_NE),2): 
+    t_on_1 = t_on_NE[i]
+    t_off_1 = t_off_NE[i]
+    T_on_1 = temperaturas_NE[i][tiempos_NE[i] == t_on_1][0]
+    T_off_1 = temperaturas_NE[i][tiempos_NE[i] == t_off_1][0]
+    delta_T_1 = T_off_1 - T_on_1
+    delta_t_1 = (t_off_1 - t_on_1).total_seconds()
+    X_1 = delta_T_1 / delta_t_1
+    print(i,'-'*50,f'\ndt = {delta_t_1:.2f}',f'dT = {delta_T_1:.2f} C')
+    print(f'rate {X_1:.3f} C/s')
+    rates_NE.append(X_1)
+    t_on_2 = t_on_NE[i+1]
+    t_off_2 = t_off_NE[i+1]
+    T_on_2 = temperaturas_NE[i+1][tiempos_NE[i+1] == t_on_2][0]
+    T_off_2 = temperaturas_NE[i+1][tiempos_NE[i+1] == t_off_2][0]
+    delta_T_2 = T_off_2 - T_on_2
+    delta_t_2 = (t_off_2 - t_on_2).total_seconds()
+    X_2 = delta_T_2 / delta_t_2
+    print(i+1,f'dt = {delta_t_2:.2f}',f'dT = {delta_T_2:.2f} C')
+    print(f'rate {X_2:.3f} C/s\n','-'*50,)
+    rates_NE_2.append(X_2)
+
     fig,(ax,ax2)=plt.subplots(2,1,figsize=(11,9),constrained_layout=True)
-    ax.plot(tiempos[i],temperaturas[i],'.-',label=f'{titulos[i]} kA/m - 300 kHZ')
-    ax.axvline(x=t_on[i], color='g', ls='-',label=f't inicio = {t_on[i]}')
-    ax.axvline(x=t_off[i], color='r', ls='-',label=f't corte = {t_off[i]}')
-    ax.set_title(f'H$_0$ = {titulos[i]} kA/m - 300 kHZ',loc='left')
-    ax2.plot(tiempos[i+1],temperaturas[i+1],'.-',label=f'{titulos[i]} kA/m - 300 kHZ')
-    ax2.axvline(x=t_on[i+1], color='g', ls='-',label=f't inicio = {t_on[i+1]}')
-    ax2.axvline(x=t_off[i+1], color='r', ls='-',label=f't corte = {t_off[i+1]}')
+    ax.plot(tiempos_NE[i],temperaturas_NE[i],'.-',label=f'{titulos_NE[i]} kA/m - 300 kHZ')
+    ax.axvline(x=t_on_NE[i], color='g', ls='-',label=f't on = {t_on_NE[i].strftime('%H:%M:%S')} - T on = {T_on_1} °C')
+    ax.axvline(x=t_off_NE[i], color='r', ls='-',label=f't off = {t_off_NE[i].strftime('%H:%M:%S')} - T off = {T_off_1} °C')
+    ax2.plot(tiempos_NE[i+1],temperaturas_NE[i+1],'.-',label=f'{titulos_NE[i+1]} kA/m - 300 kHZ')
+    ax2.axvline(x=t_on_NE[i+1], color='g', ls='-',label=f't on = {t_on_NE[i+1].strftime('%H:%M:%S')} - T on = {T_on_2} °C')
+    ax2.axvline(x=t_off_NE[i+1], color='r', ls='-',label=f't off = {t_off_NE[i+1].strftime('%H:%M:%S')} - T off = {T_off_2} °C')
     
-    ax.legend(title=f'Tiempo de medida = {delta_t[i]} s')
-    ax2.legend(title=f'Tiempo de medida = {delta_t[i+1]} s')
+    
+    ax.legend(title=fr'$\Delta$t = {delta_t_1:.2f} s - $\Delta$T = {delta_T_1:.2f} °C - rate = {X_1:.3f} °C\s')
+    ax2.legend(title=fr'$\Delta$t = {delta_t_2:.2f} s - $\Delta$T = {delta_T_2:.2f} °C - rate = {X_2:.3f} °C\s')
+
     for a in (ax,ax2):
         a.grid()
         a.set_ylim(20,43)
@@ -132,10 +157,10 @@ for i in range(0,len(titulos),2):
     ax2.set_title(paths_NE[i+1],loc='left')
     ax2.set_xlabel('t (s)')  
     
-    plt.suptitle(f'H$_0$ = {titulos[i]} kA/m - 300 kHZ')   
-    plt.savefig(f'NE_T_vs_t_{titulos[i]}kAm_300kHz.png', dpi=300)
+    plt.suptitle(f'H$_0$ = {titulos_NE[i]} kA/m - 300 kHZ')   
+    plt.savefig(f'NE_T_vs_t_{titulos_NE[i]}kAm_300kHz.png', dpi=300)
     plt.show()    
-
+#%%
 t_NE_300_150_1 = np.array([(t-t_NE_300_150_1[0]).total_seconds() for t in t_NE_300_150_1])
 t_NE_300_150_2 = np.array([(t-t_NE_300_150_2[0]).total_seconds() for t in t_NE_300_150_2])
 t_NE_300_125_1 = np.array([(t-t_NE_300_125_1[0]).total_seconds() for t in t_NE_300_125_1])
@@ -171,7 +196,7 @@ for a in (ax,ax1,ax2,ax3,ax4):
     a.set_xlim(0,)
     a.set_ylim(20,43)
 ax4.set_xlabel('t (s)')   
-plt.suptitle('NE@citrico - coprecpitacion',fontsize=16)
+plt.suptitle('NE@citrico - coprecipitacion',fontsize=16)
 plt.savefig('NE_T_vs_t_all.png', dpi=300)
 
 plt.show()
@@ -231,19 +256,45 @@ datetime(2026,2,13,16,16,0),datetime(2026,2,13,16,29,0)]
 #%
 delta_t_NF = [(off-on).total_seconds() for on,off in zip(t_on_NF,t_off_NF)]
 titulos_NF = [57,57,47,47,38,38,28,28,19,19]
+
+rates_NF=[]
+rates_NF_2=[]
+
+#%
 import matplotlib.dates as mdates
 
-for i in range(0,len(titulos_NF),2):  
+for i in range(0,len(titulos_NF),2):
+    t_on_1 = t_on_NF[i]
+    t_off_1 = t_off_NF[i]
+    T_on_1 = temperaturas_NF[i][tiempos_NF[i] == t_on_1][0]
+    T_off_1 = temperaturas_NF[i][tiempos_NF[i] == t_off_1][0]
+    delta_T_1 = T_off_1 - T_on_1
+    delta_t_1 = (t_off_1 - t_on_1).total_seconds()
+    X_1 = delta_T_1 / delta_t_1
+    print(i,'-'*50,f'\ndt = {delta_t_1:.2f}',f'dT = {delta_T_1:.2f} C')
+    print(f'rate {X_1:.3f} C/s')
+    rates_NF.append(X_1)
+    t_on_2 = t_on_NF[i+1]
+    t_off_2 = t_off_NF[i+1]
+    T_on_2 = temperaturas_NF[i+1][tiempos_NF[i+1] == t_on_2][0]
+    T_off_2 = temperaturas_NF[i+1][tiempos_NF[i+1] == t_off_2][0]
+    delta_T_2 = T_off_2 - T_on_2
+    delta_t_2 = (t_off_2 - t_on_2).total_seconds()
+    X_2 = delta_T_2 / delta_t_2
+    print(i+1,f'dt = {delta_t_2:.2f}',f'dT = {delta_T_2:.2f} C')
+    print(f'rate {X_2:.3f} C/s\n','-'*50,)
+    rates_NF_2.append(X_2)
+    
     fig,(ax,ax2)=plt.subplots(2,1,figsize=(11,9),constrained_layout=True)
     ax.plot(tiempos_NF[i],temperaturas_NF[i],'.-',label=f'{titulos_NF[i]} kA/m - 300 kHZ')
-    ax.axvline(x=t_on_NF[i], color='g', ls='-',label=f't inicio = {t_on_NF[i]}')
-    ax.axvline(x=t_off_NF[i], color='r', ls='-',label=f't corte = {t_off_NF[i]}')
+    ax.axvline(x=t_on_NF[i], color='g', ls='-',label=f't on = {t_on_NF[i].strftime('%H:%M:%S')} - T on = {T_on_1} °C')
+    ax.axvline(x=t_off_NF[i], color='r', ls='-',label=f't off = {t_off_NF[i].strftime('%H:%M:%S')} - T off = {T_off_1} °C')
     ax2.plot(tiempos_NF[i+1],temperaturas_NF[i+1],'.-',label=f'{titulos_NF[i+1]} kA/m - 300 kHZ')
-    ax2.axvline(x=t_on_NF[i+1], color='g', ls='-',label=f't inicio = {t_on_NF[i+1]}')
-    ax2.axvline(x=t_off_NF[i+1], color='r', ls='-',label=f't corte = {t_off_NF[i+1]}')
+    ax2.axvline(x=t_on_NF[i+1], color='g', ls='-',label=f't on = {t_on_NF[i+1].strftime('%H:%M:%S')} - T on = {T_on_2} °C')
+    ax2.axvline(x=t_off_NF[i+1], color='r', ls='-',label=f't off = {t_off_NF[i+1].strftime('%H:%M:%S')} - T off = {T_off_2} °C')
     
-    ax.legend(title=f'Tiempo de medida = {delta_t_NF[i]} s')
-    ax2.legend(title=f'Tiempo de medida = {delta_t_NF[i+1]} s')
+    ax.legend(title=fr'$\Delta$t = {delta_t_1:.2f} s - $\Delta$T = {delta_T_1:.2f} °C - rate = {X_1:.3f} °C\s')
+    ax2.legend(title=fr'$\Delta$t = {delta_t_2:.2f} s - $\Delta$T = {delta_T_2:.2f} °C - rate = {X_2:.3f} °C\s')
     for a in (ax,ax2):
         a.grid()
         a.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S'))
@@ -251,7 +302,7 @@ for i in range(0,len(titulos_NF),2):
     ax.set_title(paths_NF[i],loc='left')
     ax2.set_title(paths_NF[i+1],loc='left')
     
-    plt.suptitle(f'H$_0$ = {titulos_NF[i]} kA/m - 300 kHZ')
+    plt.suptitle(f'H$_0$ = {titulos_NF[i]} kA/m - 300 kHz')
     plt.savefig(f'NF_T_vs_t_{titulos_NF[i]}kAm_300kHz.png', dpi=300)
     plt.show()    
     
@@ -265,7 +316,7 @@ t_NF_300_075_1 = np.array([(t-t_NF_300_075_1[0]).total_seconds() for t in t_NF_3
 t_NF_300_075_2 = np.array([(t-t_NF_300_075_2[0]).total_seconds() for t in t_NF_300_075_2])
 t_NF_300_050_1 = np.array([(t-t_NF_300_050_1[0]).total_seconds() for t in t_NF_300_050_1])
 t_NF_300_050_2 = np.array([(t-t_NF_300_050_2[0]).total_seconds() for t in t_NF_300_050_2])
-#% Comparativas
+#% Comparativas NF
 fig,(ax,ax1,ax2,ax3,ax4)=plt.subplots(5,1,figsize=(10,10), constrained_layout=True,
                                       sharex=True,sharey=True)
 
@@ -292,10 +343,11 @@ for a in (ax,ax1,ax2,ax3,ax4):
     #.set_ylim(20,43)
 ax4.set_xlabel('t (s)')    
 
-plt.suptitle('NF@citrico - coprecpitacion',fontsize=16)
+plt.suptitle('NF@citrico - solvotermal',fontsize=16)
 plt.savefig('NF_T_vs_t_all.png', dpi=300)
 
 plt.show()
+
 #%% Comparativa NE vs NF
 fig,(ax,ax1,ax2,ax3,ax4)=plt.subplots(5,1,figsize=(10,10), constrained_layout=True,
                                       sharex=True)
@@ -342,12 +394,28 @@ for a in (ax,ax1,ax2,ax3,ax4):
 ax4.set_ylim(20,34)
 ax4.set_xlabel('t (s)')    
 plt.xlim(0,1200)
-plt.suptitle('NF@citrico - coprecpitacion',fontsize=16)
-plt.savefig('NE&NF_T_vs_t_all.png', dpi=300)
+plt.suptitle('NF@citrico & NE@citrico',fontsize=16)
+plt.savefig('NF&NE_T_vs_t_comparativa_all.png', dpi=300)
+#%% Comparativas Warming Rates
+H0=np.array([57,47,38,29,20])
+fig2,(ax,ax2) = plt.subplots(2,1,figsize=(8,5),sharex=True,constrained_layout=True)
 
+ax.plot(H0,rates_NF,'o-')
+ax.plot(H0,rates_NF_2,'o-')
 
+ax2.plot(H0,rates_NE,'o-',c='C2')
+ax2.plot(H0,rates_NE_2,'o-',c='C3')
 
-#%%%  CSAR vs t NE ========================== 
+for a in ax,ax2:
+    a.grid()
+    a.set_ylabel('Raw Warming Rate (°C/s)')
+ax.set_title('NF - 300 kHz',loc='left')
+ax2.set_title('NE - 300 kHz',loc='left')
+ax2.set_xticks(H0)
+ax2.set_xlabel('H$_0$ (kA/m)')
+plt.suptitle(r'Raw Warming rate: $\Delta$T/$\Delta$t')
+plt.show()
+#%%%  CSAR vs t NF ========================== 
 t_NF_1 = t_NF_300_150_1
 T_NF_1 = T_NF_300_150_1
 
@@ -382,7 +450,7 @@ CSAR_NF_2 = dT_NF_2*4.186e3/concentracion_NF
 CSAR_NF_3 = dT_NF_3*4.186e3/concentracion_NF
 CSAR_NF_4 = dT_NF_4*4.186e3/concentracion_NF
 
-fig,(ax,ax2,ax3)=plt.subplots(3,1,figsize=(10,12),constrained_layout=True,sharex=True) 
+fig,(ax,ax2,ax3)=plt.subplots(3,1,figsize=(10,10),constrained_layout=True,sharex=True) 
 ax.plot(t_NF_1,T_NF_1,'.-',label=paths_NF[0])
 ax.plot(t_NF_2,T_NF_2,'.-',label=paths_NF[2])
 ax.plot(t_NF_3,T_NF_3,'.-',label=paths_NF[4])
@@ -403,6 +471,7 @@ for a in [ax,ax2,ax3]:
     a.set_xlim(0,)
     #.set_ylim(20,43)
 ax.set_ylabel('T (°C)')
+ax3.set_ylim(0,)
 ax2.set_ylabel('dT/dt (°C/s)')
 ax3.set_ylabel('CSAR (W/g)')
 ax3.set_xlabel('t (s)')
@@ -576,7 +645,7 @@ ax3.plot(t_NE_1,CSAR_NE_1,'.-',label=paths_NE[0])
 ax3.plot(t_NE_2,CSAR_NE_2,'.-',label=paths_NE[2])
 ax3.plot(t_NE_3,CSAR_NE_3,'.-',label=paths_NE[4])
 ax3.plot(t_NE_4,CSAR_NE_4,'.-',label=paths_NE[6])
-
+ax3.set_ylim(0,)
 for a in [ax,ax2,ax3]:
     a.grid()
     a.legend()
@@ -587,7 +656,7 @@ ax2.set_ylabel('dT/dt (°C/s)')
 ax3.set_ylabel('CSAR (W/g)')
 ax3.set_xlabel('t (s)')
 plt.suptitle('CSAR - NE@citrico - 15.0 g/L',fontsize=16)
-#plt.savefig('CSAR_NE.png', dpi=300)
+plt.savefig('CSAR_NE_derivada_suavizada.png', dpi=300)
 
 
 
