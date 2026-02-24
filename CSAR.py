@@ -139,11 +139,11 @@ for i in range(0,len(titulos_NE),2):
 
     fig,(ax,ax2)=plt.subplots(2,1,figsize=(11,9),constrained_layout=True)
     ax.plot(tiempos_NE[i],temperaturas_NE[i],'.-',label=f'{titulos_NE[i]} kA/m - 300 kHZ')
-    ax.axvline(x=t_on_NE[i], color='g', ls='-',label=f't on = {t_on_NE[i].strftime('%H:%M:%S')} - T on = {T_on_1} °C')
-    ax.axvline(x=t_off_NE[i], color='r', ls='-',label=f't off = {t_off_NE[i].strftime('%H:%M:%S')} - T off = {T_off_1} °C')
+    ax.axvline(x=t_on_NE[i], color='g', ls='-',label=f't on = {t_on_NE[i].strftime("%H:%M:%S")} - T on = {T_on_1} °C')
+    ax.axvline(x=t_off_NE[i], color='r', ls='-',label=f't off = {t_off_NE[i].strftime("%H:%M:%S")} - T off = {T_off_1} °C')
     ax2.plot(tiempos_NE[i+1],temperaturas_NE[i+1],'.-',label=f'{titulos_NE[i+1]} kA/m - 300 kHZ')
-    ax2.axvline(x=t_on_NE[i+1], color='g', ls='-',label=f't on = {t_on_NE[i+1].strftime('%H:%M:%S')} - T on = {T_on_2} °C')
-    ax2.axvline(x=t_off_NE[i+1], color='r', ls='-',label=f't off = {t_off_NE[i+1].strftime('%H:%M:%S')} - T off = {T_off_2} °C')
+    ax2.axvline(x=t_on_NE[i+1], color='g', ls='-',label=f't on = {t_on_NE[i+1].strftime("%H:%M:%S")} - T on = {T_on_2} °C')
+    ax2.axvline(x=t_off_NE[i+1], color='r', ls='-',label=f't off = {t_off_NE[i+1].strftime("%H:%M:%S")} - T off = {T_off_2} °C')
     
     
     ax.legend(title=fr'$\Delta$t = {delta_t_1:.2f} s - $\Delta$T = {delta_T_1:.2f} °C - rate = {X_1:.3f} °C\s')
@@ -287,11 +287,11 @@ for i in range(0,len(titulos_NF),2):
     
     fig,(ax,ax2)=plt.subplots(2,1,figsize=(11,9),constrained_layout=True)
     ax.plot(tiempos_NF[i],temperaturas_NF[i],'.-',label=f'{titulos_NF[i]} kA/m - 300 kHZ')
-    ax.axvline(x=t_on_NF[i], color='g', ls='-',label=f't on = {t_on_NF[i].strftime('%H:%M:%S')} - T on = {T_on_1} °C')
-    ax.axvline(x=t_off_NF[i], color='r', ls='-',label=f't off = {t_off_NF[i].strftime('%H:%M:%S')} - T off = {T_off_1} °C')
+    ax.axvline(x=t_on_NF[i], color='g', ls='-',label=f't on = {t_on_NF[i].strftime("%H:%M:%S")} - T on = {T_on_1} °C')
+    ax.axvline(x=t_off_NF[i], color='r', ls='-',label=f't off = {t_off_NF[i].strftime("%H:%M:%S")} - T off = {T_off_1} °C')
     ax2.plot(tiempos_NF[i+1],temperaturas_NF[i+1],'.-',label=f'{titulos_NF[i+1]} kA/m - 300 kHZ')
-    ax2.axvline(x=t_on_NF[i+1], color='g', ls='-',label=f't on = {t_on_NF[i+1].strftime('%H:%M:%S')} - T on = {T_on_2} °C')
-    ax2.axvline(x=t_off_NF[i+1], color='r', ls='-',label=f't off = {t_off_NF[i+1].strftime('%H:%M:%S')} - T off = {T_off_2} °C')
+    ax2.axvline(x=t_on_NF[i+1], color='g', ls='-',label=f't on = {t_on_NF[i+1].strftime("%H:%M:%S")} - T on = {T_on_2} °C')
+    ax2.axvline(x=t_off_NF[i+1], color='r', ls='-',label=f't off = {t_off_NF[i+1].strftime("%H:%M:%S")} - T off = {T_off_2} °C')
     
     ax.legend(title=fr'$\Delta$t = {delta_t_1:.2f} s - $\Delta$T = {delta_T_1:.2f} °C - rate = {X_1:.3f} °C\s')
     ax2.legend(title=fr'$\Delta$t = {delta_t_2:.2f} s - $\Delta$T = {delta_T_2:.2f} °C - rate = {X_2:.3f} °C\s')
@@ -414,6 +414,7 @@ ax2.set_title('NE - 300 kHz',loc='left')
 ax2.set_xticks(H0)
 ax2.set_xlabel('H$_0$ (kA/m)')
 plt.suptitle(r'Raw Warming rate: $\Delta$T/$\Delta$t')
+plt.savefig('Raw_Warming_Rate.png', dpi=300)
 plt.show()
 #%%%  CSAR vs t NF ========================== 
 t_NF_1 = t_NF_300_150_1
@@ -525,6 +526,7 @@ ax3.plot(t_NE_1,CSAR_NE_1,'.-',label=paths_NE[0])
 ax3.plot(t_NE_2,CSAR_NE_2,'.-',label=paths_NE[2])
 ax3.plot(t_NE_3,CSAR_NE_3,'.-',label=paths_NE[4])
 ax3.plot(t_NE_4,CSAR_NE_4,'.-',label=paths_NE[6])
+ax3.set_ylim(0,)
 
 for a in [ax,ax2,ax3]:
     a.grid()
@@ -536,7 +538,7 @@ ax2.set_ylabel('dT/dt (°C/s)')
 ax3.set_ylabel('CSAR (W/g)')
 ax3.set_xlabel('t (s)')
 plt.suptitle('CSAR - NE@citrico - 15.0 g/L',fontsize=16)
-#plt.savefig('CSAR_NE.png', dpi=300)
+plt.savefig('CSAR_NE_raw.png', dpi=300)
 
 #%% Optimizo derivada 
 
