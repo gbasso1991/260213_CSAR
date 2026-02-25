@@ -398,22 +398,26 @@ plt.suptitle('NF@citrico & NE@citrico',fontsize=16)
 plt.savefig('NF&NE_T_vs_t_comparativa_all.png', dpi=300)
 #%% Comparativas Warming Rates
 H0=np.array([57,47,38,29,20])
-fig2,(ax,ax2) = plt.subplots(2,1,figsize=(8,5),sharex=True,constrained_layout=True)
+H0_2=np.array([57,47,38])
+WR_esar = np.array([ufloat(1.1,0.2),ufloat(0.71,0.06),ufloat(0.41,0.03)])
 
-ax.plot(H0,rates_NF,'o-')
-ax.plot(H0,rates_NF_2,'o-')
+fig2,(ax,ax2)= plt.subplots(2,1,figsize=(8,5),sharex=True,constrained_layout=True)
 
-ax2.plot(H0,rates_NE,'o-',c='C2')
-ax2.plot(H0,rates_NE_2,'o-',c='C3')
+ax.plot(H0,rates_NF,'.-',label='NF CSAR 1')
+ax.plot(H0,rates_NF_2,'.-',label='NF CSAR 2')
+ax.errorbar(x=H0_2,y = np.array([a.n for a in WR_esar]),yerr = np.array([a.s for a in WR_esar]),fmt='.-', capsize=5,c='C4',label='NF ESAR')
+ax2.plot(H0,rates_NE,'.-',c='C2',label='NE CSAR 1')
+ax2.plot(H0,rates_NE_2,'.-',c='C3',label='NE CSAR 2')
 
 for a in ax,ax2:
     a.grid()
     a.set_ylabel('Raw Warming Rate (°C/s)')
+    a.legend()
 ax.set_title('NF - 300 kHz',loc='left')
 ax2.set_title('NE - 300 kHz',loc='left')
 ax2.set_xticks(H0)
 ax2.set_xlabel('H$_0$ (kA/m)')
-plt.suptitle(r'Raw Warming rate: $\Delta$T/$\Delta$t')
+plt.suptitle(r'Raw Warming Rate: $\Delta$T/$\Delta$t')
 plt.savefig('Raw_Warming_Rate.png', dpi=300)
 plt.show()
 #%%%  CSAR vs t NF ========================== 
