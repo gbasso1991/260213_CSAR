@@ -137,7 +137,7 @@ for i in range(0,len(titulos_NE),2):
     print(f'rate {X_2:.3f} C/s\n','-'*50,)
     rates_NE_2.append(X_2)
 
-    fig,(ax,ax2)=plt.subplots(2,1,figsize=(11,9),constrained_layout=True)
+    fig,(ax,ax2)=plt.subplots(2,1,figsize=(9,7.5),constrained_layout=True)
     ax.plot(tiempos_NE[i],temperaturas_NE[i],'.-',label=f'{titulos_NE[i]} kA/m - 300 kHZ')
     ax.axvline(x=t_on_NE[i], color='g', ls='-',label=f't on = {t_on_NE[i].strftime("%H:%M:%S")} - T on = {T_on_1} °C')
     ax.axvline(x=t_off_NE[i], color='r', ls='-',label=f't off = {t_off_NE[i].strftime("%H:%M:%S")} - T off = {T_off_1} °C')
@@ -152,6 +152,7 @@ for i in range(0,len(titulos_NE),2):
     for a in (ax,ax2):
         a.grid()
         a.set_ylim(20,43)
+        a.set_ylabel('T (°C)')
         
     ax.set_title(paths_NE[i],loc='left')
     ax2.set_title(paths_NE[i+1],loc='left')
@@ -171,8 +172,8 @@ t_NE_300_075_1 = np.array([(t-t_NE_300_075_1[0]).total_seconds() for t in t_NE_3
 t_NE_300_075_2 = np.array([(t-t_NE_300_075_2[0]).total_seconds() for t in t_NE_300_075_2])
 t_NE_300_050_1 = np.array([(t-t_NE_300_050_1[0]).total_seconds() for t in t_NE_300_050_1])
 t_NE_300_050_2 = np.array([(t-t_NE_300_050_2[0]).total_seconds() for t in t_NE_300_050_2])
-
-fig,(ax,ax1,ax2,ax3,ax4)=plt.subplots(5,1,figsize=(10,10), constrained_layout=True,sharex=True,sharey=True)
+#%%
+fig,(ax,ax1,ax2,ax3,ax4)=plt.subplots(5,1,figsize=(10,8.5), constrained_layout=True,sharex=True,sharey=True)
 
 ax.set_title('57 kA/m',loc='left')
 ax1.set_title('47 kA/m',loc='left')
@@ -192,9 +193,10 @@ ax4.plot(t_NE_300_050_1,T_NE_300_050_1,'.-',label=paths_NE[8])
 ax4.plot(t_NE_300_050_2,T_NE_300_050_2,'.-',label=paths_NE[9])
 for a in (ax,ax1,ax2,ax3,ax4):
     a.grid()
-    a.legend()
+    a.legend(ncol=2,loc='best')
     a.set_xlim(0,)
     a.set_ylim(20,43)
+    a.set_ylabel('T (°C)')
 ax4.set_xlabel('t (s)')   
 plt.suptitle('NE@citrico - coprecipitacion',fontsize=16)
 plt.savefig('NE_T_vs_t_all.png', dpi=300)
@@ -285,7 +287,7 @@ for i in range(0,len(titulos_NF),2):
     print(f'rate {X_2:.3f} C/s\n','-'*50,)
     rates_NF_2.append(X_2)
     
-    fig,(ax,ax2)=plt.subplots(2,1,figsize=(11,9),constrained_layout=True)
+    fig,(ax,ax2)=plt.subplots(2,1,figsize=(9,7.5),constrained_layout=True)
     ax.plot(tiempos_NF[i],temperaturas_NF[i],'.-',label=f'{titulos_NF[i]} kA/m - 300 kHZ')
     ax.axvline(x=t_on_NF[i], color='g', ls='-',label=f't on = {t_on_NF[i].strftime("%H:%M:%S")} - T on = {T_on_1} °C')
     ax.axvline(x=t_off_NF[i], color='r', ls='-',label=f't off = {t_off_NF[i].strftime("%H:%M:%S")} - T off = {T_off_1} °C')
@@ -316,9 +318,9 @@ t_NF_300_075_1 = np.array([(t-t_NF_300_075_1[0]).total_seconds() for t in t_NF_3
 t_NF_300_075_2 = np.array([(t-t_NF_300_075_2[0]).total_seconds() for t in t_NF_300_075_2])
 t_NF_300_050_1 = np.array([(t-t_NF_300_050_1[0]).total_seconds() for t in t_NF_300_050_1])
 t_NF_300_050_2 = np.array([(t-t_NF_300_050_2[0]).total_seconds() for t in t_NF_300_050_2])
-#% Comparativas NF
-fig,(ax,ax1,ax2,ax3,ax4)=plt.subplots(5,1,figsize=(10,10), constrained_layout=True,
-                                      sharex=True,sharey=True)
+#%% Comparativas NF
+fig,(ax,ax1,ax2,ax3,ax4)=plt.subplots(5,1,figsize=(10,8.5), constrained_layout=True,
+                                      sharex=True,sharey=False)
 
 ax.set_title('57 kA/m',loc='left')
 ax1.set_title('47 kA/m',loc='left')
@@ -338,9 +340,13 @@ ax4.plot(t_NF_300_050_1,T_NF_300_050_1,'.-',label=paths_NF[8])
 ax4.plot(t_NF_300_050_2,T_NF_300_050_2,'.-',label=paths_NF[9])
 for a in (ax,ax1,ax2,ax3,ax4):
     a.grid()
-    a.legend()
+    a.legend(ncol=2,loc='best')
     a.set_xlim(0,)
     #.set_ylim(20,43)
+for a in (ax,ax1,ax2,ax3):
+    a.set_ylim(20,88)
+
+
 ax4.set_xlabel('t (s)')    
 
 plt.suptitle('NF@citrico - solvotermal',fontsize=16)
@@ -349,7 +355,7 @@ plt.savefig('NF_T_vs_t_all.png', dpi=300)
 plt.show()
 
 #%% Comparativa NE vs NF
-fig,(ax,ax1,ax2,ax3,ax4)=plt.subplots(5,1,figsize=(10,10), constrained_layout=True,
+fig,(ax,ax1,ax2,ax3,ax4)=plt.subplots(5,1,figsize=(14,8.5), constrained_layout=True,
                                       sharex=True)
 
 ax.set_title('57 kA/m',loc='left')
@@ -390,12 +396,14 @@ for a in (ax,ax1,ax2,ax3,ax4):
     a.grid()
     a.legend(ncol=2)
     a.set_xlim(0,)
+    a.set_ylim(20,88)
+    a.set_ylabel('T (°C)')
 
 ax4.set_ylim(20,34)
 ax4.set_xlabel('t (s)')    
 plt.xlim(0,1200)
 plt.suptitle('NF@citrico & NE@citrico',fontsize=16)
-plt.savefig('NF&NE_T_vs_t_comparativa_all.png', dpi=300)
+plt.savefig('NF_vs_NE_T_vs_t_comparativa_all.png', dpi=300)
 #%% Comparativas Warming Rates
 H0=np.array([57,47,38,29,20])
 H0_2=np.array([57,47,38])
@@ -405,7 +413,7 @@ fig2,(ax,ax2)= plt.subplots(2,1,figsize=(8,5),sharex=True,constrained_layout=Tru
 
 ax.plot(H0,rates_NF,'.-',label='NF CSAR 1')
 ax.plot(H0,rates_NF_2,'.-',label='NF CSAR 2')
-ax.errorbar(x=H0_2,y = np.array([a.n for a in WR_esar]),yerr = np.array([a.s for a in WR_esar]),fmt='.-', capsize=5,c='C4',label='NF ESAR')
+#  ax.errorbar(x=H0_2,y = np.array([a.n for a in WR_esar]),yerr = np.array([a.s for a in WR_esar]),fmt='.-', capsize=5,c='C4',label='NF ESAR')
 ax2.plot(H0,rates_NE,'.-',c='C2',label='NE CSAR 1')
 ax2.plot(H0,rates_NE_2,'.-',c='C3',label='NE CSAR 2')
 
@@ -418,7 +426,7 @@ ax2.set_title('NE - 300 kHz',loc='left')
 ax2.set_xticks(H0)
 ax2.set_xlabel('H$_0$ (kA/m)')
 plt.suptitle(r'Raw Warming Rate: $\Delta$T/$\Delta$t')
-plt.savefig('Raw_Warming_Rate.png', dpi=300)
+plt.savefig('Raw_Wa rming_Rate.png', dpi=300)
 plt.show()
 #%%%  CSAR vs t NF ========================== 
 t_NF_1 = t_NF_300_150_1
