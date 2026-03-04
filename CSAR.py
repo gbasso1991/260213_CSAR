@@ -318,6 +318,31 @@ t_NF_300_075_1 = np.array([(t-t_NF_300_075_1[0]).total_seconds() for t in t_NF_3
 t_NF_300_075_2 = np.array([(t-t_NF_300_075_2[0]).total_seconds() for t in t_NF_300_075_2])
 t_NF_300_050_1 = np.array([(t-t_NF_300_050_1[0]).total_seconds() for t in t_NF_300_050_1])
 t_NF_300_050_2 = np.array([(t-t_NF_300_050_2[0]).total_seconds() for t in t_NF_300_050_2])
+#%% CSAR a partir de los rates
+
+CSAR_NF_1 = np.array(rates_NF)*4186/concentracion_NF
+CSAR_NF_2 = np.array(rates_NF_2)*4186/concentracion_NF
+
+WR_esar = np.array([ufloat(1.1,0.2),ufloat(0.71,0.06),ufloat(0.41,0.03)])
+CSAR_esar = np.array([a*4186/concentracion_NF for a in WR_esar])
+
+fig2,ax= plt.subplots(figsize=(8,4),sharex=True,constrained_layout=True)
+
+ax.plot(H0,CSAR_NF_1,'.-',label='NF CSAR 1')
+ax.plot(H0,CSAR_NF_2,'.-',label='NF CSAR 2')
+ax.errorbar(x=H0_2,y = np.array([a.n for a in CSAR_esar]),yerr = np.array([a.s for a in CSAR_esar]),fmt='.-', capsize=5,c='C4',label='CSAR from WR ESAR')
+ax.grid()
+ax.set_ylabel('CSAR (W/g)')
+ax.legend()
+ax.set_title('NF - 300 kHz - 15 g/L',loc='left')
+ax.set_xticks(H0)
+ax.set_xlabel('H$_0$ (kA/m)')
+plt.suptitle('CSAR a partir del Raw WR')
+plt.savefig('CSAR_from_Raw_Warming_Rate_NF.png', dpi=300)
+plt.show()
+
+
+
 #%% Comparativas NF
 fig,(ax,ax1,ax2,ax3,ax4)=plt.subplots(5,1,figsize=(10,8.5), constrained_layout=True,
                                       sharex=True,sharey=False)
@@ -354,7 +379,7 @@ plt.savefig('NF_T_vs_t_all.png', dpi=300)
 
 plt.show()
 
-#%% Comparativa NE vs NF
+#%% Comparativa NE vs NF Templogs
 fig,(ax,ax1,ax2,ax3,ax4)=plt.subplots(5,1,figsize=(14,8.5), constrained_layout=True,
                                       sharex=True)
 
@@ -428,7 +453,7 @@ ax2.set_xlabel('H$_0$ (kA/m)')
 plt.suptitle(r'Raw Warming Rate: $\Delta$T/$\Delta$t')
 plt.savefig('Raw_Wa rming_Rate.png', dpi=300)
 plt.show()
-#%%%  CSAR vs t NF ========================== 
+#%%%  CSAR vs t NF   ========================== 
 t_NF_1 = t_NF_300_150_1
 T_NF_1 = T_NF_300_150_1
 
@@ -492,7 +517,7 @@ plt.suptitle('CSAR - NF@citrico - 15.0 g/L',fontsize=16)
 plt.savefig('CSAR_NF.png', dpi=300)
 plt.show()
 
-#%% CSAR NE 
+#%% CSAR vs t NE  
 t_NE_1 = t_NE_300_150_1
 T_NE_1 = T_NE_300_150_1
 t_NE_2 = t_NE_300_125_1
@@ -700,7 +725,7 @@ for a in [ax,ax2]:
     a.legend()
 plt.show()
 
-#%%
+
 
 #%%
 
