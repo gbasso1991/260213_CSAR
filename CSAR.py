@@ -328,9 +328,9 @@ CSAR_esar = np.array([a*4186/concentracion_NF for a in WR_esar])
 
 fig2,ax= plt.subplots(figsize=(8,4),sharex=True,constrained_layout=True)
 
-ax.plot(H0,CSAR_NF_1,'.-',label='NF CSAR 1')
-ax.plot(H0,CSAR_NF_2,'.-',label='NF CSAR 2')
-ax.errorbar(x=H0_2,y = np.array([a.n for a in CSAR_esar]),yerr = np.array([a.s for a in CSAR_esar]),fmt='.-', capsize=5,c='C4',label='CSAR from WR ESAR')
+ax.plot(H0,CSAR_NF_1,'.-',label='CSAR 1')
+ax.plot(H0,CSAR_NF_2,'.-',label='CSAR 2')
+#ax.errorbar(x=H0_2,y = np.array([a.n for a in CSAR_esar]),yerr = np.array([a.s for a in CSAR_esar]),fmt='.-', capsize=5,c='C4',label='ecSAR')
 ax.grid()
 ax.set_ylabel('CSAR (W/g)')
 ax.legend()
