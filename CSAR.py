@@ -319,7 +319,7 @@ t_NF_300_075_2 = np.array([(t-t_NF_300_075_2[0]).total_seconds() for t in t_NF_3
 t_NF_300_050_1 = np.array([(t-t_NF_300_050_1[0]).total_seconds() for t in t_NF_300_050_1])
 t_NF_300_050_2 = np.array([(t-t_NF_300_050_2[0]).total_seconds() for t in t_NF_300_050_2])
 #%% CSAR a partir de los rates
-
+concentracion_NF=15.0
 CSAR_NF_1 = np.array(rates_NF)*4186/concentracion_NF
 CSAR_NF_2 = np.array(rates_NF_2)*4186/concentracion_NF
 
@@ -330,7 +330,7 @@ fig2,ax= plt.subplots(figsize=(8,4),sharex=True,constrained_layout=True)
 
 ax.plot(H0,CSAR_NF_1,'.-',label='CSAR 1')
 ax.plot(H0,CSAR_NF_2,'.-',label='CSAR 2')
-#ax.errorbar(x=H0_2,y = np.array([a.n for a in CSAR_esar]),yerr = np.array([a.s for a in CSAR_esar]),fmt='.-', capsize=5,c='C4',label='ecSAR')
+ax.errorbar(x=H0_2,y = np.array([a.n for a in CSAR_esar]),yerr = np.array([a.s for a in CSAR_esar]),fmt='.-', capsize=5,c='C4',label='ecSAR')
 ax.grid()
 ax.set_ylabel('CSAR (W/g)')
 ax.legend()
@@ -438,7 +438,7 @@ fig2,(ax,ax2)= plt.subplots(2,1,figsize=(8,5),sharex=True,constrained_layout=Tru
 
 ax.plot(H0,rates_NF,'.-',label='NF CSAR 1')
 ax.plot(H0,rates_NF_2,'.-',label='NF CSAR 2')
-#  ax.errorbar(x=H0_2,y = np.array([a.n for a in WR_esar]),yerr = np.array([a.s for a in WR_esar]),fmt='.-', capsize=5,c='C4',label='NF ESAR')
+ax.errorbar(x=H0_2,y = np.array([a.n for a in WR_esar]),yerr = np.array([a.s for a in WR_esar]),fmt='.-', capsize=5,c='C4',label='NF ESAR')
 ax2.plot(H0,rates_NE,'.-',c='C2',label='NE CSAR 1')
 ax2.plot(H0,rates_NE_2,'.-',c='C3',label='NE CSAR 2')
 
@@ -451,7 +451,7 @@ ax2.set_title('NE - 300 kHz',loc='left')
 ax2.set_xticks(H0)
 ax2.set_xlabel('H$_0$ (kA/m)')
 plt.suptitle(r'Raw Warming Rate: $\Delta$T/$\Delta$t')
-plt.savefig('Raw_Wa rming_Rate.png', dpi=300)
+plt.savefig('Raw_Warming_Rate.png', dpi=300)
 plt.show()
 #%%%  CSAR vs t NF   ========================== 
 t_NF_1 = t_NF_300_150_1
@@ -729,7 +729,7 @@ plt.show()
 
 #%%
 
-fig, (ax,ax1,ax2)=plt.subplots(3,1,figsize=(10,8),constrained_layout=True,sharex=True,sharey=Tue)
+fig, (ax,ax1,ax2)=plt.subplots(3,1,figsize=(10,8),constrained_layout=True,sharex=True,sharey=True)
 
 ax.set_title('300 kHz',loc='left')
 
